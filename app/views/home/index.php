@@ -30,7 +30,7 @@
                         <?php } ?>
                         <h4><?=$info->username?></h4>
                         <span class="d-block small opacity-50" style="color: blue; font-weight: bold"><?=$info->text?></span>
-                        <?php if ($info->checked != 1){?>
+                        <?php if ($info->checked != 1 && isset($_SESSION['authorized'])){?>
                             <input type="checkbox" class="form-check-input" name="checked[<?=$info->id?>]">
                             <label class="form-check-label">Сделать</label>
                         <?php } ?>
