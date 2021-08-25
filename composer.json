@@ -1,0 +1,12 @@
+{
+  "require": {
+    "php": ">=5.3.2",
+    "illuminate/database": "^8.56"
+  },
+
+  "autoload": {
+    "classmap": [
+      "app/models"
+    ]
+  }
+}
