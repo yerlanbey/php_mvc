@@ -13,6 +13,20 @@
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/js/bootstrap.min.js" integrity="sha384-cn7l7gDp0eyniUwwAZgrzD06kc/tftFf19TOAs2zVinnD/C7E91j9yyk5//jjpt/" crossorigin="anonymous"></script>
 </head>
 <body>
+<?php
+$result_for_page = 3;
+$count = $data['infos']->count();
+$number_of_pages = ceil($count/$result_for_page);
+
+if (!isset($_GET['page'])){
+    $page = 1;
+}else{
+    $page = $_GET['page'];
+}
+$this_page_first_result = ($page - 1) * $result_for_page;
+
+$records = $data['infos']->skip($this_page_first_result)->take($result_for_page);
+?>
 <div class="container py-3">
     <?php require 'includes/header.php'?>
     <div class="list-group list-group-checkable">
@@ -23,7 +37,7 @@
         <?php if (isset($_SESSION['authorized'])){?>
             <form action="/blog/public/home/checked/" method="POST" enctype="multipart/form-data">
         <?php } ?>
-        <?php foreach ($data['infos'] as $info) {?>
+        <?php foreach ($records as $info) {?>
                     <label class="list-group-item py-3" style="margin-bottom: 20px; border: 2px solid dimgray; border-radius: 10px">
                         <?php if ($info->checked == 1){?>
                             <span class="badge bg-primary">Проверена</span>
@@ -36,6 +50,23 @@
                         <?php } ?>
                     </label>
         <?php } ?>
+                <nav aria-label="Page navigation example">
+                    <ul class="pagination">
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Previous">
+                                <span aria-hidden="true">&laquo;</span>
+                            </a>
+                        </li>
+                        <?php for ($page = 1; $page <= $number_of_pages; $page++){?>
+                            <li class="page-item"><a class="page-link" href="/blog/public/home/index?page=<?=$page?>" ><?=$page?></a></li>
+                        <?php } ?>
+                        <li class="page-item">
+                            <a class="page-link" href="#" aria-label="Next">
+                                <span aria-hidden="true">&raquo;</span>
+                            </a>
+                        </li>
+                    </ul>
+                </nav>
         <?php if (isset($_SESSION['authorized'])){?>
                 <button type="submit" class="btn btn-success">Отправить</button>
             </form>
